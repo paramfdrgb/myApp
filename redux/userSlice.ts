@@ -194,7 +194,6 @@ const userFeaturesReducer = createSlice({
       console.log(action?.error?.message, "logOut-error");
       state.logOutLoader = false;
       state.logOutDone = true;
-      // Alert.alert(action?.error?.message);
     });
   },
 });
