@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-// import Toast from "react-native-toast-message";
+import Toast from "react-native-toast-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Alert } from "react-native";
 import api from "@/hooks/api";
 
 const storeUSerDataToLocalStore = async (value: any) => {
@@ -110,10 +109,12 @@ const userFeaturesReducer = createSlice({
       state.otpId = action?.payload?.data?.otpId;
     });
     builder.addCase(sendPhoneForOTP.rejected, (state, action: any) => {
-      console.log(action?.error?.message, "sendPhoneForOTP-error");
       state.sendOtpLoader = false;
       state.otpSentSuccessfully = false;
-      Alert.alert(action?.error?.message);
+      Toast.show({
+        type: "error",
+        text1: action?.error?.message,
+      });
     });
 
     // verify otp
@@ -121,7 +122,6 @@ const userFeaturesReducer = createSlice({
       state.verifyOtpLoader = true;
     });
     builder.addCase(verifyOTP.fulfilled, (state, action) => {
-      console.log(action.payload.data, "createAccount");
       state.verifyOtpLoader = false;
       state.otpVerifiedSuccessfully =
         action.payload.data.otpValidationStatusEnum === "SUCCESS"
@@ -130,21 +130,29 @@ const userFeaturesReducer = createSlice({
       if (action.payload.data.accounts?.active) {
         state.accountCreatedAlready = true;
         storeUSerDataToLocalStore({
-          data: { access_token: action.payload.headers?.access_token },
+          data: {
+            access_token: action.payload.headers?.access_token,
+            cartId: action.payload.data.cartId,
+          },
         });
       } else {
         state.accountCreatedAlready = false;
       }
       if (action.payload.data.otpValidationStatusEnum !== "SUCCESS") {
-        Alert.alert("Invalid otp!");
+        Toast.show({
+          type: "error",
+          text1: "Invalid OTP",
+        });
       }
     });
     builder.addCase(verifyOTP.rejected, (state, action: any) => {
-      console.log(action?.error?.message, "verifyOTP-error");
       state.verifyOtpLoader = false;
       state.otpVerifiedSuccessfully = false;
       state.accountCreatedAlready = false;
-      Alert.alert(action?.error?.message);
+      Toast.show({
+        type: "error",
+        text1: action?.error?.message,
+      });
     });
 
     // create account
@@ -159,14 +167,17 @@ const userFeaturesReducer = createSlice({
         data: {
           access_token: action.payload.headers?.access_token,
           accntId: action.payload?.data?.id,
+          cartId: action.payload.data.cartId,
         },
       });
     });
     builder.addCase(createAccount.rejected, (state, action: any) => {
-      console.log(action?.error?.message, "createAccount-error");
       state.accountCreateLoader = false;
       state.accountCreatedSuccessfully = false;
-      Alert.alert(action?.error?.message);
+      Toast.show({
+        type: "error",
+        text1: action?.error?.message,
+      });
     });
 
     // get User Account
@@ -178,7 +189,6 @@ const userFeaturesReducer = createSlice({
       state.userData = action.payload.data;
     });
     builder.addCase(getUserAccount.rejected, (state, action: any) => {
-      console.log(action?.error?.message, "getUserAccount-error");
       state.getUserAccountLoader = false;
     });
 
@@ -191,7 +201,6 @@ const userFeaturesReducer = createSlice({
       state.logOutDone = true;
     });
     builder.addCase(logOut.rejected, (state, action: any) => {
-      console.log(action?.error?.message, "logOut-error");
       state.logOutLoader = false;
       state.logOutDone = true;
     });

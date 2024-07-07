@@ -10,7 +10,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { router } from "expo-router";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { resetStore } from "@/redux/userSlice";
+import { getUserAccount, resetStore } from "@/redux/userSlice";
 // import axios from "axios";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -39,11 +39,12 @@ export default function RootLayout() {
       const getData = async () => {
         try {
           const jsonValue: any = await AsyncStorage.getItem("user-data");
-
           if (jsonValue == null) {
             router.replace("/otp");
           } else {
+            const accntId = JSON.parse(jsonValue).data.accntId;
             router.replace("/(tabs)");
+            dispatch(getUserAccount({ accntId: accntId }));
           }
         } catch (e) {
           console.log(e, "jsonValue-error");

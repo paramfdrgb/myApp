@@ -35,7 +35,7 @@ export default function PrimaryButton(props: PrimaryButtonProps) {
     text: {
       color: "#ffff",
       fontSize: 16,
-      fontWeight: "500",
+      fontWeight: "600",
     },
   });
   return (

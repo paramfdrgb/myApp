@@ -1,30 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import {
-  FlatList,
-  Image,
-  Pressable,
-  SafeAreaView,
-  ScrollView,
-  Switch,
-  View,
-} from "react-native";
-// import { AntDesign } from "@expo/vector-icons";
-// import { EvilIcons } from "@expo/vector-icons";
+import { FlatList, SafeAreaView, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import ThemedText from "@/components/ThemedText";
 import Input from "@/components/Input";
-import DismissKeyboard from "@/components/DismissKeyboard";
 import Offers from "../../components/offers";
 import Categories from "../../components/categories";
 import BestSeller from "../../components/bestSeller";
 import SwitchInput from "@/components/switch";
 import { getUserAccount } from "@/redux/userSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-
-const Tab = createBottomTabNavigator();
 
 export default function HomePage() {
   const theme = useThemeColor();
@@ -47,7 +33,6 @@ export default function HomePage() {
 
   function MyTabBar() {
     return (
-      // <DismissKeyboard>
       <SafeAreaView
         style={{
           backgroundColor: theme.primary,
@@ -138,7 +123,6 @@ export default function HomePage() {
           renderItem={({ item }) => item.Component}
         />
       </SafeAreaView>
-      // </DismissKeyboard>
     );
   }
 

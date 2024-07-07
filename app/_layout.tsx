@@ -7,6 +7,8 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
+// Styles
+import Toast from "react-native-toast-message";
 
 export default function Layout() {
   const colorScheme = useColorScheme();
@@ -27,6 +29,7 @@ export default function Layout() {
             // },
           }}
         />
+        <Toast />
       </ReduxProvidexWrapper>
     </ThemeProvider>
   );

@@ -60,7 +60,6 @@ export default function CreateAccount() {
     },
     validationSchema: SignupSchema,
     onSubmit: (values) => {
-      console.log(values);
       dispatch(createAccount2({ formValues: { ...values }, otpId: otpId }));
     },
   });
@@ -229,7 +228,6 @@ export default function CreateAccount() {
             title="Create Account"
             disabled={accountCreateLoader}
             onPress={() => {
-              console.log("pressed");
               dispatch(
                 createAccount2({ formValues: { ...values }, otpId: otpId })
               );
